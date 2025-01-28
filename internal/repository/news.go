@@ -1,16 +1,11 @@
 package repository
 
 import (
+	"fmt"
+
 	"github.com/didsqq/ZeroAgency_Test/internal/models"
 	"gopkg.in/reform.v1"
 )
-
-type dbNews struct {
-	Id         int64   `reform:"id"`
-	Title      string  `reform:"title"`
-	Content    string  `reform:"content"`
-	Categories []int64 `reform:"categories"`
-}
 
 type NewsPostgres struct {
 	db *reform.DB
@@ -20,13 +15,33 @@ func NewNewsPostgres(db *reform.DB) *NewsPostgres {
 	return &NewsPostgres{db: db}
 }
 
-func (r *NewsPostgres) GetAll() (models.News, error) {
-	// var news []models.News
-	// getNewsQuery := fmt.Sprintf("SELECT * FROM %s", todoListsTable)
-	// err := r.db.FindAllFrom(&news, getNewsQuery)
-	// return news, nil
+func (r *NewsPostgres) GetAll() ([]models.News, error) {
+	var newsSl []models.News
+	query := fmt.Sprintf("SELECT * FROM %s", newsTable)
+	rows, err := r.db.Query(query, nil)
+
+	for rows.Next() {
+		var news models.News
+		err := rows.Scan(&news.Id, &news.Title, &news.Content, &news.Categories)
+		if err != nil {
+			return nil, err
+		}
+		newsSl = append(newsSl, news)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return newsSl, nil
 }
 
 func (r *NewsPostgres) Update(newsId int, input models.News) error {
+	query := fmt.Sprintf("UPDATE %s SET title = $1, content = $2, categories = NOW() WHERE id = $3", newsTable)
 
+	_, err := r.db.Exec(query)
+	if err != nil {
+		return err
+	}
+	return nil
 }

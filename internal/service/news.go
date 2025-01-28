@@ -15,10 +15,10 @@ func NewNewsService(repo repository.News) *NewsItemService {
 	}
 }
 
-func (s *NewsItemService) GetAll() (models.News, error) {
+func (s *NewsItemService) GetAll() ([]models.News, error) {
 	news, err := s.repo.GetAll()
 	if err != nil {
-		return models.News{}, err
+		return nil, err
 	}
 
 	return news, nil

@@ -6,7 +6,7 @@ import (
 )
 
 type News interface {
-	GetAll() (models.News, error)
+	GetAll() ([]models.News, error)
 	Update(newsId int, input models.News) error
 }
 

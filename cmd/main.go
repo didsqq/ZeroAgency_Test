@@ -33,7 +33,7 @@ func main() {
 
 	reformDB := reform.NewDB(db, postgresql.Dialect, reform.NewPrintfLogger(logrus.Debugf))
 
-	repos := NewRepository(reformDB)
+	repos := repository.NewRepository(reformDB)
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 

@@ -1,8 +1,8 @@
 package models
 
 type News struct {
-	Id         int64   `json:"Id"`
-	Title      string  `json:"Title"`
-	Content    string  `json:"Content"`
-	Categories []int64 `json:"Categories"`
+	Id         int64   `json:"Id" reform:"id"`
+	Title      string  `json:"Title" reform:"title"`
+	Content    string  `json:"Content" reform:"content"`
+	Categories []int64 `json:"Categories" reform:"categories"`
 }
